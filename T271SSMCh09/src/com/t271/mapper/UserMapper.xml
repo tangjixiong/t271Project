@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace:配置接口的全路径 -->
+<mapper namespace="com.t271.mapper.UserMapper">
+	<select id="findUserByCodeAndPwd" resultType="user">
+		SELECT * FROM `smbms_user` WHERE `userCode`=#{code} and `userPassword`=#{pwd}
+	</select>
+    <!--统计数据总条数-->
+    <select id="countUserByPage" resultType="int">
+        SELECT count(*) FROM `smbms_user` u
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="queryname!=null and queryname!=''">
+                and username LIKE CONCAT('%',#{queryname},'%')
+            </if>
+            <if test="queryUserRole!=null and queryUserRole!=''">
+                and userRole=#{queryUserRole}
+            </if>
+        </trim>
+    </select>
+    <select id="getUserByPage" resultType="user">
+        SELECT u.*,FLOOR(DATEDIFF(NOW(),u.`birthday`)/365) age  FROM `smbms_user` u
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="queryname!=null and queryname!=''">
+                and username LIKE CONCAT('%',#{queryname},'%')
+            </if>
+            <if test="queryUserRole!=null and queryUserRole!=''">
+                and userRole=#{queryUserRole}
+            </if>
+        </trim>
+        limit #{startrow},#{pagesize}
+    </select>
+
+    <!--新增用户-->
+    <insert id="insertUser">
+        INSERT INTO `smbms_user`(`userCode`,`userName`,`userPassword`,`userRole`,birthday,idPicPath,workPicPath)
+         VALUES(#{userCode},#{userName},#{userPassword},#{userRole},#{birthday},#{idPicPath},#{workPicPath})
+    </insert>
+
+    <select id="getUserById" resultType="user">
+         SELECT u.*,FLOOR(DATEDIFF(NOW(),u.`birthday`)/365) age  FROM `smbms_user` u
+         where id=#{id}
+    </select>
+
+    <update id="updateUser">
+        update `smbms_user` set `userCode`=#{userCode},`userName`=#{userName},
+        `userPassword`=#{userPassword},`userRole`=#{userRole},birthday=#{birthday}
+         where id=#{id}
+    </update>
+
+    <select id="getUserByUserCode" resultType="user">
+        SELECT u.*,FLOOR(DATEDIFF(NOW(),u.`birthday`)/365) age  FROM `smbms_user` u
+         where userCode=#{userCode}
+    </select>
+</mapper>

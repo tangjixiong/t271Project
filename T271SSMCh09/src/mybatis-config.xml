@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- settings:Mybatis全局配置标签,用于改变框架行为 -->
+	<settings>
+		<setting name="logImpl" value="LOG4J" />
+		<!--PARTIAL:部分自动匹配，当resultMap标签中，包含association或者Collection，自动匹配将会失效-->
+	    <setting name="autoMappingBehavior" value="FULL" />
+		<setting name="lazyLoadingEnabled" value="false"/>
+		<!--开启二级缓存-->
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+
+	<!-- 自动给某个包下所有类取别名，别名为：类名小写 -->
+	 <typeAliases>
+		<package name="com.t271.entity" />
+	</typeAliases>
+
+</configuration>
+
